@@ -20,7 +20,8 @@ def get_data():
 @app.route('/country', methods=['GET'])
 @cross_origin(origin='*', headers=['Content-Type'])
 def get_country():
-    countryName = request.args.get('name').capitalize()
+    countryName = capitalize(request.args.get('name'))
+    print(countryName)
     happDf = pd.read_csv("Data2023.csv")
     rsltDf = happDf[happDf["CountryName"] == countryName]
     idx = rsltDf.iloc[0].name
@@ -28,6 +29,9 @@ def get_country():
     return rsltDf.to_json()
 
 
+def capitalize(country):
+    # Split the country into words, capitalize each word, then join them back together
+    return ' '.join(word.capitalize() for word in country.split(' '))
 
 # run server
 if __name__ == '__main__':
